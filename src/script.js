@@ -4,10 +4,11 @@ import { Inspector } from 'three/addons/inspector/Inspector.js'
 import { SkyMesh } from 'three/addons/objects/SkyMesh.js'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { bloom } from 'three/examples/jsm/tsl/display/BloomNode.js'
-import { materialEmissive, pass, uv } from 'three/tsl'
+import { materialEmissive, pass, uv, vec3 } from 'three/tsl'
 import { TransformControls } from 'three/addons/controls/TransformControls.js'
 
 import Shield from './Shield'
+import Shield2 from './Shield2'
 
 /**
  * Base
@@ -123,7 +124,7 @@ canvas.addEventListener( 'pointerdown', (event) =>{
         
 })
 
-const shieldGUI = renderer.inspector.createParameters('Shield');
+const shieldGUI = renderer.inspector.createParameters('Shield').close();
 shieldGUI.add(shield.radius, 'value', 0, 5, 0.01).name('radius');
 shieldGUI.addColor(shield.colorA, 'value').name('colorA');
 shieldGUI.addColor(shield.colorB, 'value').name('colorB');
@@ -136,6 +137,28 @@ scene.add(transform.getHelper());
 transform.addEventListener('dragging-changed', (event) => {    
     controls.enabled = !event.value;
 });
+
+/**
+ * Shield2
+ */
+const shield2 = new Shield2();
+
+await shield2.ready;
+shield2.mesh.position.z = 3;
+scene.add(shield2.mesh);
+
+const shield2GUI =  renderer.inspector.createParameters('Shield2');
+shield2GUI.add(shield2.radius, 'value', 0, 5, 0.01).name('radius');
+shield2GUI.add(shield2.gapRatio, 'value', 0, 5, 0.01).name('gapRatio');
+
+const transform2 = new TransformControls(camera, canvas);
+transform2.attach(shield2.mesh);
+scene.add(transform2.getHelper());
+
+transform2.addEventListener('dragging-changed', (event) => {    
+    controls.enabled = !event.value;
+});
+
 
 /**
  * Floor
