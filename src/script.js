@@ -141,7 +141,10 @@ transform.addEventListener('dragging-changed', (event) => {
 /**
  * Shield2
  */
-const shield2 = new Shield2();
+const ShieldUv = await textureLoader.loadAsync('./ShieldUv.png')
+ShieldUv.flipY = false;
+// ShieldUv.colorSpace = THREE.SRGBColorSpace;
+const shield2 = new Shield2(ShieldUv);
 
 await shield2.ready;
 shield2.mesh.position.z = 3;

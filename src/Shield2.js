@@ -1,12 +1,15 @@
 import * as THREE from 'three/webgpu';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { float, normalLocal, positionLocal } from 'three/tsl';
+import { float, normalLocal, positionLocal, texture, uv, vec3 } from 'three/tsl';
 import { uniform } from 'three/tsl';
+import { Fn } from 'three/src/nodes/TSL.js';
+import { vec2 } from 'three/tsl';
 
 export default class Shield2
 {
-    constructor(radius = 3.5, gapRatio = 1)
-    {
+    constructor(ShieldUv, radius = 3.5, gapRatio = 1)
+    {   
+        this.uvTexture = ShieldUv;
         this.radius = uniform(radius);
         this.gapRatio = uniform(gapRatio);
 
@@ -48,9 +51,13 @@ export default class Shield2
     setMaterial()
     {
         this.material = new THREE.MeshBasicNodeMaterial({
-        
+            // transparent: true,
+            // wireframe: true
         });
-        this.material.colorNode = normalLocal;
+        this.material.colorNode = Fn(() => {
+            const hexagonsColor = texture(this.uvTexture, uv());
+            return hexagonsColor;
+        })();
 
         const gapRatio = this.gapRatio.mul(0.05);
         const gap = this.radius.mul(gapRatio);
