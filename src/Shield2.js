@@ -12,8 +12,7 @@ export default class Shield2
         gapRatio = 1,
         colorA = color(0xb224ff),
         colorB = color(0x758cff),
-        strength = 15,
-        junctionRadius = 0.15
+        strength = 15
     )
     {   
         this.uvTexture = ShieldUv;
@@ -22,7 +21,6 @@ export default class Shield2
         this.colorA = uniform(colorA);
         this.colorB = uniform(colorB);
         this.strength = uniform(strength);
-        this.junctionRadius = uniform(junctionRadius);
 
         this.ready = this.initialize();
     }
@@ -144,7 +142,7 @@ export default class Shield2
         const center = objectPosition(this.mesh);
         const sdf = positionWorld
                         .distance(center)
-                        .sub(this.radius.add(this.gapRatio.mul(this.junctionRadius)));
+                        .sub(this.radius.add(this.gapRatio.mul(0.15, this.radius)));
         const mask = sdf.negate().step(0);
         const strength = sdf.remapClamp(0, -0.15, 1, 0).mul(mask).pow(3).mul(this.strength)
 

@@ -157,7 +157,6 @@ shield2GUI.add(shield2.gapRatio, 'value', 0, 5, 0.01).name('gapRatio');
 shield2GUI.addColor(shield2.colorA, 'value').name('colorA');
 shield2GUI.addColor(shield2.colorB, 'value').name('colorB');
 shield2GUI.add(shield2.strength, 'value', 1, 100, 0.01).name('strength');
-shield2GUI.add(shield2.junctionRadius, 'value', 0, 2, 0.01).name('JunctionRadius');
 
 const transform2 = new TransformControls(camera, canvas);
 transform2.attach(shield2.mesh);
