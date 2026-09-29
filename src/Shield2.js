@@ -8,11 +8,11 @@ export default class Shield2
 {
     constructor(
         ShieldUv, 
-        radius = 1, 
-        gapRatio = 1,
+        radius = 2, 
+        gapRatio = 1.5,
         colorA = color(0xb224ff),
         colorB = color(0x758cff),
-        strength = 15
+        strength = 25
     )
     {   
         this.uvTexture = ShieldUv;
@@ -62,6 +62,7 @@ export default class Shield2
             transparent: true,
             side: THREE.DoubleSide,
             blending: THREE.AdditiveBlending,
+            
         });
         this.material.colorNode = Fn(() => {
 

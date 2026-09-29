@@ -149,6 +149,7 @@ const shield2 = new Shield2(ShieldUv);
 await shield2.ready;
 shield2.mesh.position.z = 3;
 shield2.mesh.position.y = 2;
+shield2.mesh.renderOrder = 1;
 scene.add(shield2.mesh);
 
 const shield2GUI =  renderer.inspector.createParameters('Shield2');
