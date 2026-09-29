@@ -141,18 +141,23 @@ transform.addEventListener('dragging-changed', (event) => {
 /**
  * Shield2
  */
-const ShieldUv = await textureLoader.loadAsync('./ShieldUv.png')
+const ShieldUv = await textureLoader.loadAsync('./ShieldUv11.png')
 ShieldUv.flipY = false;
 // ShieldUv.colorSpace = THREE.SRGBColorSpace;
 const shield2 = new Shield2(ShieldUv);
 
 await shield2.ready;
 shield2.mesh.position.z = 3;
+shield2.mesh.position.y = 2;
 scene.add(shield2.mesh);
 
 const shield2GUI =  renderer.inspector.createParameters('Shield2');
 shield2GUI.add(shield2.radius, 'value', 0, 5, 0.01).name('radius');
 shield2GUI.add(shield2.gapRatio, 'value', 0, 5, 0.01).name('gapRatio');
+shield2GUI.addColor(shield2.colorA, 'value').name('colorA');
+shield2GUI.addColor(shield2.colorB, 'value').name('colorB');
+shield2GUI.add(shield2.strength, 'value', 1, 100, 0.01).name('strength');
+shield2GUI.add(shield2.junctionRadius, 'value', 0, 2, 0.01).name('JunctionRadius');
 
 const transform2 = new TransformControls(camera, canvas);
 transform2.attach(shield2.mesh);
@@ -174,7 +179,10 @@ transform2.addEventListener('dragging-changed', (event) => {
         new THREE.MeshStandardNodeMaterial({ map: texture, transparent: true })
     )
     mesh.material.opacityNode = uv().sub(0.5).length().smoothstep(0.5, 0.2)
-    mesh.material.emissiveNode = materialEmissive.add(shield.junctionNode);
+    mesh.material.emissiveNode = materialEmissive.add(shield.junctionNode).add(shield2.junctionNode);
+
+    // console.log(shield2.junctionNode);
+    
     mesh.rotation.x = - Math.PI * 0.5
     mesh.receiveShadow = true
     mesh.renderOrder = -1
@@ -191,7 +199,7 @@ model.scene.traverse(child =>
     {
         child.castShadow = true
         child.receiveShadow = true
-        child.material.emissiveNode = materialEmissive.add(shield.junctionNode);
+        child.material.emissiveNode = materialEmissive.add(shield.junctionNode).add(shield2.junctionNode);
     }
 })
 scene.add(model.scene)
