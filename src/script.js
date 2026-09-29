@@ -4,11 +4,11 @@ import { Inspector } from 'three/addons/inspector/Inspector.js'
 import { SkyMesh } from 'three/addons/objects/SkyMesh.js'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { bloom } from 'three/examples/jsm/tsl/display/BloomNode.js'
-import { materialEmissive, pass, uv, vec3 } from 'three/tsl'
+import { materialEmissive, pass, uv } from 'three/tsl'
 import { TransformControls } from 'three/addons/controls/TransformControls.js'
 
-import Shield from './Shield'
-import Shield2 from './Shield2'
+import Shield from './Shield';
+import Shield2 from './Shield2';
 
 /**
  * Base
@@ -143,7 +143,6 @@ transform.addEventListener('dragging-changed', (event) => {
  */
 const ShieldUv = await textureLoader.loadAsync('./ShieldUv11.png')
 ShieldUv.flipY = false;
-// ShieldUv.colorSpace = THREE.SRGBColorSpace;
 const shield2 = new Shield2(ShieldUv);
 
 await shield2.ready;
@@ -180,8 +179,6 @@ transform2.addEventListener('dragging-changed', (event) => {
     )
     mesh.material.opacityNode = uv().sub(0.5).length().smoothstep(0.5, 0.2)
     mesh.material.emissiveNode = materialEmissive.add(shield.junctionNode).add(shield2.junctionNode);
-
-    // console.log(shield2.junctionNode);
     
     mesh.rotation.x = - Math.PI * 0.5
     mesh.receiveShadow = true

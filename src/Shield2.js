@@ -1,8 +1,6 @@
 import * as THREE from 'three/webgpu';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { add, attribute, color, dot, float, hash, mix, mul, mx_noise_vec3, normalLocal, normalView, objectPosition, positionLocal, positionViewDirection, positionWorld, select, sin, texture, time, TWO_PI, uv, vec3, vec4 } from 'three/tsl';
-import { uniform } from 'three/tsl';
-import { Fn } from 'three/src/nodes/TSL.js';
+import { add, attribute, color, dot, mix, mul, normalLocal, normalView, objectPosition, positionLocal, positionViewDirection, positionWorld, select, texture, time, uv, vec3, vec4, Fn, uniform} from 'three/tsl';
 
 export default class Shield2
 {
@@ -49,7 +47,7 @@ export default class Shield2
         });
 
         if (!modelMesh) {
-        throw new Error('Shield2.glb does not contain a mesh.');
+        throw new Error('No mesh');
         }
 
         this.geometry = modelMesh.geometry.clone();
@@ -91,13 +89,13 @@ export default class Shield2
             const finalColor = mul(
                 emissiveStrength.r.mul(this.strength),
                 fresnel.pow(4),
-            )
+            );
 
             const fColor = mix(
                 this.colorB,
                 this.colorA,
                 finalColor
-            )
+            );
             return vec4(fColor.rgb, finalColor.a);
         })();
 
@@ -126,12 +124,12 @@ export default class Shield2
     {
         if (!this.geometry)
         {
-            throw new Error('Geometry has not finished loading.');
+            throw new Error('not finished loading');
         }
 
         if (!this.material)
         {
-            throw new Error('Create a material before creating the mesh.');
+            throw new Error('No Material');
         }
 
         this.mesh = new THREE.Mesh(this.geometry, this.material);
@@ -145,13 +143,13 @@ export default class Shield2
                         .distance(center)
                         .sub(this.radius.add(this.gapRatio.mul(0.15, this.radius)));
         const mask = sdf.negate().step(0);
-        const strength = sdf.remapClamp(0, -0.15, 1, 0).mul(mask).pow(3).mul(this.strength)
+        const strength = sdf.remapClamp(0, -0.15, 1, 0).mul(mask).pow(3).mul(this.strength);
 
         const _color = mix(
             this.colorB,
             this.colorA,
             strength
-        ).mul(strength)
+        ).mul(strength);
 
         this.junctionNode = Fn(() => {
             return vec3(_color);
