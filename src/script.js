@@ -122,7 +122,7 @@ canvas.addEventListener( 'pointerdown', (event) =>{
         shield.impacts.add(intersect);
     }
         
-})
+});
 
 const shieldGUI = renderer.inspector.createParameters('Shield').close();
 shieldGUI.add(shield.radius, 'value', 0, 5, 0.01).name('radius');
@@ -150,6 +150,26 @@ shield2.mesh.position.z = 3;
 shield2.mesh.position.y = 2;
 shield2.mesh.renderOrder = 1;
 scene.add(shield2.mesh);
+
+canvas.addEventListener( 'pointerdown', (event) =>{
+    const mouse = new THREE.Vector2(
+        (event.clientX / sizes.width) * 2 - 1,
+        -(event.clientY / sizes.height) * 2 + 1
+    )
+    
+    raycaster.setFromCamera(mouse, camera);
+
+    const sphere2Rad = shield2.radius.value + (shield2.gapRatio.value * shield2.radius.value * 0.15);
+    const sphere2 = new THREE.Sphere(shield2.mesh.position, sphere2Rad);
+    let intersect = new THREE.Vector3();
+    intersect = raycaster.ray.intersectSphere(sphere2, intersect);
+    
+    if(intersect)
+    {
+        shield2.impacts.add(intersect);
+    }
+        
+});
 
 const shield2GUI =  renderer.inspector.createParameters('Shield2');
 shield2GUI.add(shield2.radius, 'value', 0, 5, 0.01).name('radius');
